@@ -39,7 +39,7 @@ def train_unet_from_dataset(dataset):
         steps_per_epoch=training_spe,
         epochs=100,
         validation_data=val_imgen,
-        validation_Steps=val_spe,
+        validation_steps=val_spe,
         verbose=1
     )
     model.save('daitip_unet{}_from_dataset_normed.h5'.format(ts))
