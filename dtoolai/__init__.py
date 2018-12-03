@@ -112,8 +112,8 @@ class ImageMaskGenerator(object):
             itiles.append(itile)
             mtiles.append(mtile)
 
-        X = np.array(itiles)
-        Y = np.array(mtiles).reshape(self.batch_size, self.ts, self.ts, 1)
+        X = np.array(itiles, dtype=np.float32)
+        Y = np.array(mtiles, dtype=np.float32).reshape(self.batch_size, self.ts, self.ts, 1)
 
         if self.normalise:
             X /= 255
