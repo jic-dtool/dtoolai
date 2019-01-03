@@ -27,31 +27,36 @@ def train_unet_from_dataset(dataset):
 
     ts = 256
     batch_size = 16
-    training_imgen = ImageMaskGenerator(dataset, ts=ts, usetype='training', batch_size=batch_size)
-    val_imgen = ImageMaskGenerator(dataset, ts=ts, usetype='validation', batch_size=batch_size)
+    training_imgen = ImageMaskGenerator(dataset, usetype='training', ts=ts, batch_size=batch_size)
+    val_imgen = ImageMaskGenerator(dataset, usetype='validation', ts=ts, batch_size=batch_size)
 
     training_spe = len(training_imgen) / batch_size
     val_spe = len(val_imgen) / batch_size
 
     model = get_unet_256()
+    print("Got model")
     model.fit_generator(
         training_imgen,
         steps_per_epoch=training_spe,
-        epochs=100,
+        epochs=50,
         validation_data=val_imgen,
         validation_steps=val_spe,
         verbose=1
     )
-    model.save('daitip_unet{}_from_dataset_normed.h5'.format(ts))
+
+    return model
 
 
 @click.command()
 @click.argument('dataset_uri')
-def main(dataset_uri):
+@click.argument('output_model_fpath')
+def main(dataset_uri, output_model_fpath):
 
     dataset = DataSet.from_uri(dataset_uri)
 
     trained_model = train_unet_from_dataset(dataset)
+
+    trained_model.save(output_model_fpath)
 
 
 if __name__ == '__main__':

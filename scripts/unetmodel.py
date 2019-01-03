@@ -104,8 +104,9 @@ def get_unet_256(input_shape=(256, 256, 3),
     inputs = Input(shape=input_shape)
     # 256
     bn = True
-    do = False
-    do_frac = 1.0
+    do = True
+    cl = False
+    do_frac = 0.2
     down0 = Conv2D(32, (3, 3), padding='same')(inputs)
     if bn: down0 = BatchNormalization()(down0)
     down0 = Activation('relu')(down0)
@@ -171,7 +172,7 @@ def get_unet_256(input_shape=(256, 256, 3),
     # center
 
     up4 = UpSampling2D((2, 2))(center)
-    up4 = concatenate([down4, up4], axis=3)
+    if cl: up4 = concatenate([down4, up4], axis=3)
     up4 = Conv2D(512, (3, 3), padding='same')(up4)
     if bn: up4 = BatchNormalization()(up4)
     up4 = Activation('relu')(up4)
@@ -184,7 +185,7 @@ def get_unet_256(input_shape=(256, 256, 3),
     # 16
 
     up3 = UpSampling2D((2, 2))(up4)
-    up3 = concatenate([down3, up3], axis=3)
+    if cl: up3 = concatenate([down3, up3], axis=3)
     up3 = Conv2D(256, (3, 3), padding='same')(up3)
     if bn: up3 = BatchNormalization()(up3)
     up3 = Activation('relu')(up3)
@@ -197,7 +198,7 @@ def get_unet_256(input_shape=(256, 256, 3),
     # 32
 
     up2 = UpSampling2D((2, 2))(up3)
-    up2 = concatenate([down2, up2], axis=3)
+    if cl: up2 = concatenate([down2, up2], axis=3)
     up2 = Conv2D(128, (3, 3), padding='same')(up2)
     if bn: up2 = BatchNormalization()(up2)
     up2 = Activation('relu')(up2)
@@ -210,7 +211,7 @@ def get_unet_256(input_shape=(256, 256, 3),
     # 64
 
     up1 = UpSampling2D((2, 2))(up2)
-    up1 = concatenate([down1, up1], axis=3)
+    if cl: up1 = concatenate([down1, up1], axis=3)
     up1 = Conv2D(64, (3, 3), padding='same')(up1)
     if bn: up1 = BatchNormalization()(up1)
     up1 = Activation('relu')(up1)
@@ -223,7 +224,7 @@ def get_unet_256(input_shape=(256, 256, 3),
     # 128
 
     up0 = UpSampling2D((2, 2))(up1)
-    up0 = concatenate([down0, up0], axis=3)
+    if cl: up0 = concatenate([down0, up0], axis=3)
     up0 = Conv2D(32, (3, 3), padding='same')(up0)
     if bn: up0 = BatchNormalization()(up0)
     up0 = Activation('relu')(up0)
