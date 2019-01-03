@@ -99,14 +99,18 @@ def weighted_bce_dice_loss(y_true, y_pred):
 
 
 def get_unet_256(input_shape=(256, 256, 3),
-                 num_classes=1):
+                 num_classes=1,
+                 bn=True,
+                 do=True,
+                 cl=False,
+                 do_frac=0.2):
 
     inputs = Input(shape=input_shape)
     # 256
-    bn = True
-    do = True
-    cl = False
-    do_frac = 0.2
+    # bn = True
+    # do = True
+    # cl = False
+    # do_frac = 0.2
     down0 = Conv2D(32, (3, 3), padding='same')(inputs)
     if bn: down0 = BatchNormalization()(down0)
     down0 = Activation('relu')(down0)
