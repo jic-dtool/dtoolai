@@ -106,7 +106,7 @@ class ImageMaskGenerator(object):
                 itile, mtile = next(self.tgen)
 
             except StopIteration:
-                self.tgen = dataset_tile_generator(self.dataset, self.ts)
+                self.tgen = dataset_tile_generator(self.dataset, self.usetype, self.ts)
                 itile, mtile = next(self.tgen)
 
             itiles.append(itile)
