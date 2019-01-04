@@ -68,14 +68,10 @@ def train_unet_from_dataset(dataset, params):
     return model, history
 
 
-def train_and_save_results(input_ds, output_ds):
+def train_and_save_results(input_ds, output_ds, params):
 
-    params = Parameters()
     params.parameter_dict['model_name'] = 'UNet256'
-    params.parameter_dict['dropout'] = True
     params.parameter_dict['dropout_frac'] = 0.2
-    params.parameter_dict['batchnorm'] = True
-    params.parameter_dict['crosslinks'] = False
     params.parameter_dict['tile_size'] = 256
     params.parameter_dict['batch_size'] = 16
 
@@ -98,22 +94,18 @@ def train_and_save_results(input_ds, output_ds):
 
 @click.command()
 @click.argument('input_dataset_uri')
-@click.argument('output_fpath')
-def main(input_dataset_uri, output_fpath):
+@click.argument('output_dspath')
+@click.argument('param_json')
+def main(input_dataset_uri, output_dspath, param_json):
 
-    output_base_uri = os.path.dirname(output_fpath)
-    output_name = os.path.basename(output_fpath)
+    output_base_uri = os.path.dirname(output_dspath)
+    output_name = os.path.basename(output_dspath)
 
     input_ds = DataSet.from_uri(input_dataset_uri)
+    params = Parameters.from_json_string(param_json)
 
-    readme = {}
-    readme['input_ds_uri'] = input_dataset_uri
-    readme['input_ds_name'] = input_ds.name
-    readme['input_ds_uuid'] = input_ds.uuid
-    with DerivedDataSet(output_base_uri, output_name) as output_ds:
-        output_ds.readme_dict = readme
-
-        train_and_save_results(input_ds, output_ds)
+    with DerivedDataSet(output_base_uri, output_name, input_ds) as output_ds:
+        train_and_save_results(input_ds, output_ds, params)
 
 
 if __name__ == '__main__':
