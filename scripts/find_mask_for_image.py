@@ -12,6 +12,7 @@ from keras.utils.generic_utils import CustomObjectScope
 
 from model import (
     bce_dice_loss,
+    weighted_bce_dice_loss,
     dice_coeff
 )
 
@@ -80,6 +81,7 @@ def model_from_fpath(model_fpath):
     with CustomObjectScope({
         'bce_dice_loss': bce_dice_loss,
         'dice_coeff': dice_coeff,
+        'weighted_bce_dice_loss': weighted_bce_dice_loss,
     }):
         model = load_model(model_fpath)
 
