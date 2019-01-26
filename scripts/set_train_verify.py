@@ -50,8 +50,8 @@ def annotate_by_random_selection(dataset, frac_verify):
     usetype_overlay = {idn: 'training' for idn in dataset.identifiers}
 
     for idn in verify_image_idns:
-        usetype_overlay[idn] = 'verification'
-        usetype_overlay[mask_lookup[idn]] = 'verification'
+        usetype_overlay[idn] = 'validation'
+        usetype_overlay[mask_lookup[idn]] = 'validation'
 
     dataset.put_overlay('usetype', usetype_overlay)
 
