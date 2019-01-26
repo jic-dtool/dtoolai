@@ -3,3 +3,5 @@
 *.out
 *.slurm
 *.sh
+*.png
+*.jpg
